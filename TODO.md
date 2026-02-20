@@ -1,8 +1,8 @@
 # TODO — Elite Tendancy Platform Build
 
 ## In Progress (Today)
-- [ ] Freeze module architecture and route map
-- [ ] Create Supabase schema v2 migration SQL
+- [x] Freeze module architecture and route map
+- [x] Create Supabase schema v2 migration SQL
 - [ ] Implement role-based route guards
 - [ ] Set up dashboard shells (tenant/landlord/admin/owner)
 - [ ] Run end-of-day smoke checklist
