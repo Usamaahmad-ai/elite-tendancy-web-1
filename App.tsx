@@ -12,6 +12,12 @@ import AboutPage from './pages/AboutPage';
 import InsightsPage from './pages/InsightsPage';
 import ContactPage from './pages/ContactPage';
 import { AnimatePresence } from 'framer-motion';
+import RoleGuard from './components/RoleGuard';
+import Login from './pages/auth/Login';
+import Signup from './pages/auth/Signup';
+import TenantDashboard from './pages/dashboards/TenantDashboard';
+import LandlordDashboard from './pages/dashboards/LandlordDashboard';
+import AdminDashboard from './pages/dashboards/AdminDashboard';
 
 const AnimatedRoutes: React.FC = () => {
   const location = useLocation();
@@ -26,6 +32,13 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/insights" element={<InsightsPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/property/:id" element={<PropertyDetails />} />
+        <Route path="/auth/login" element={<Login />} />
+        <Route path="/auth/signup" element={<Signup />} />
+
+        <Route path="/tenant/dashboard" element={<RoleGuard allow={['tenant']}><TenantDashboard /></RoleGuard>} />
+        <Route path="/landlord/dashboard" element={<RoleGuard allow={['landlord']}><LandlordDashboard /></RoleGuard>} />
+        <Route path="/admin/dashboard" element={<RoleGuard allow={['admin', 'owner']}><AdminDashboard /></RoleGuard>} />
+
         <Route path="/privacy" element={<Legal title="Privacy Policy" type="privacy" />} />
         <Route path="/terms" element={<Legal title="Terms of Service" type="terms" />} />
       </Routes>

@@ -1,20 +1,28 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Elite Tendancy Platform
 
-# Run and deploy your AI Studio app
+Premium UK rental marketplace platform under the Elite Tendancy brand.
 
-This contains everything you need to run your app locally.
+## Stack
+- React + Vite
+- Supabase (DB/Auth/Storage)
+- GitHub Pages (deployment)
 
-View your app in AI Studio: https://ai.studio/apps/drive/1bkKWDLEJOX96DOwED1XgGJ3Lx7YLP2jc
+## Local development
+1. Install dependencies
+   - `npm install`
+2. Configure environment variables (copy `.env.example` to `.env.local`)
+3. Start dev server
+   - `npm run dev`
 
-## Run Locally
+## Build
+- `npm run build`
 
-**Prerequisites:**  Node.js
+## Deployment
+- GitHub Actions deploys `dist/` to GitHub Pages on push to `main`.
 
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Tracking
+Execution and QA docs:
+- `EXECUTION_TRACKER.md`
+- `DAILY_KPI_TEMPLATE.md`
+- `SMOKE_TEST_CHECKLIST.md`
+- `TODO.md`
