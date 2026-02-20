@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Mail, Phone, ArrowRight } from 'lucide-react';
+import LeadForm from '../components/LeadForm';
 
 const Contact: React.FC = () => {
   return (
@@ -76,39 +77,7 @@ const Contact: React.FC = () => {
                <ArrowRight className="text-white -rotate-45" size={48} />
              </div>
 
-             <form className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                   <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest text-gold/80 font-bold">First Name</label>
-                      <input type="text" className="w-full bg-obsidian/50 border-b border-white/10 py-3 text-white focus:border-gold transition-colors outline-none placeholder-white/10 hover:border-white/30" placeholder="John" />
-                   </div>
-                   <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest text-gold/80 font-bold">Last Name</label>
-                      <input type="text" className="w-full bg-obsidian/50 border-b border-white/10 py-3 text-white focus:border-gold transition-colors outline-none placeholder-white/10 hover:border-white/30" placeholder="Doe" />
-                   </div>
-                </div>
-                <div className="space-y-2">
-                   <label className="text-[10px] uppercase tracking-widest text-gold/80 font-bold">Email Address</label>
-                   <input type="email" className="w-full bg-obsidian/50 border-b border-white/10 py-3 text-white focus:border-gold transition-colors outline-none placeholder-white/10 hover:border-white/30" placeholder="john@example.com" />
-                </div>
-                <div className="space-y-2">
-                   <label className="text-[10px] uppercase tracking-widest text-gold/80 font-bold">Interest</label>
-                   <select className="w-full bg-obsidian/50 border-b border-white/10 py-3 text-white focus:border-gold transition-colors outline-none cursor-pointer">
-                      <option className="bg-obsidian">Property Management</option>
-                      <option className="bg-obsidian">Tenant Application</option>
-                      <option className="bg-obsidian">Investment Opportunities</option>
-                   </select>
-                </div>
-                <div className="space-y-2 pt-4">
-                   <label className="text-[10px] uppercase tracking-widest text-gold/80 font-bold">Message</label>
-                   <textarea rows={3} className="w-full bg-obsidian/50 border-b border-white/10 py-3 text-white focus:border-gold transition-colors outline-none placeholder-white/10 resize-none hover:border-white/30" placeholder="Tell us about your needs..."></textarea>
-                </div>
-                
-                <button type="button" className="w-full bg-white text-obsidian py-4 mt-8 font-bold uppercase tracking-widest hover:bg-gold transition-all duration-500 flex items-center justify-center gap-2 group">
-                   Request Consultation
-                   <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                </button>
-             </form>
+             <LeadForm sourcePage="home-section" />
           </motion.div>
         </div>
       </div>
