@@ -11,8 +11,8 @@
 - [x] Day 2: Supabase schema hardening (v2 SQL + indexes + RLS + seed)
 - [x] Day 2: Role dashboard shells upgraded with stats cards + service layer
 - [ ] Day 2: Run Supabase migration in project and validate role access
-- [ ] Public marketplace search/filter refactor
-- [ ] Landlord listing wizard
+- [x] Public marketplace search/filter refactor
+- [x] Landlord listing wizard (UI scaffold)
 - [ ] Tenant saved listings + alerts
 - [ ] Admin moderation queue
 - [ ] Automation rule runner (v1)

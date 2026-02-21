@@ -2,15 +2,27 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { properties } from '../data/properties';
 import { Link } from 'react-router-dom';
-import { MapPin, BedDouble, Bath, Square, ArrowRight, Filter, Check } from 'lucide-react';
+import { MapPin, BedDouble, Bath, Square } from 'lucide-react';
 import { Property } from '../types';
+import FilterBar from '../components/marketplace/FilterBar';
 
 const PropertiesPage: React.FC = () => {
   const [filterType, setFilterType] = useState('All');
-  
+  const [query, setQuery] = useState('');
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(0);
+  const [beds, setBeds] = useState(0);
+
   const filteredProperties = useMemo(() => {
-    return filterType === 'All' ? properties : properties.filter(p => p.type === filterType);
-  }, [filterType]);
+    return properties.filter((p) => {
+      const typeOk = filterType === 'All' || p.type === filterType;
+      const queryOk = !query || `${p.title} ${p.location}`.toLowerCase().includes(query.toLowerCase());
+      const minOk = minPrice <= 0 || p.priceValue >= minPrice;
+      const maxOk = maxPrice <= 0 || p.priceValue <= maxPrice;
+      const bedsOk = beds <= 0 || p.beds >= beds;
+      return typeOk && queryOk && minOk && maxOk && bedsOk;
+    });
+  }, [filterType, query, minPrice, maxPrice, beds]);
 
   const types = ['All', 'Penthouse', 'Villa', 'Loft', 'Estate'];
 
@@ -36,21 +48,19 @@ const PropertiesPage: React.FC = () => {
           </motion.div>
 
           {/* Filters */}
-          <div className="mt-16 flex flex-wrap gap-4">
-             {types.map((type) => (
-                <button
-                   key={type}
-                   onClick={() => setFilterType(type)}
-                   className={`px-6 py-2 border rounded-full text-xs uppercase tracking-widest transition-all duration-300 ${
-                      filterType === type 
-                      ? 'bg-gold text-obsidian border-gold font-bold' 
-                      : 'text-white/60 border-white/20 hover:border-white hover:text-white'
-                   }`}
-                >
-                   {type}
-                </button>
-             ))}
-          </div>
+          <FilterBar
+            query={query}
+            setQuery={setQuery}
+            type={filterType}
+            setType={setFilterType}
+            minPrice={minPrice}
+            setMinPrice={setMinPrice}
+            maxPrice={maxPrice}
+            setMaxPrice={setMaxPrice}
+            beds={beds}
+            setBeds={setBeds}
+            types={types}
+          />
         </div>
       </section>
 

@@ -18,6 +18,8 @@ import Signup from './pages/auth/Signup';
 import TenantDashboard from './pages/dashboards/TenantDashboard';
 import LandlordDashboard from './pages/dashboards/LandlordDashboard';
 import AdminDashboard from './pages/dashboards/AdminDashboard';
+import Listings from './pages/landlord/Listings';
+import NewListing from './pages/landlord/NewListing';
 
 const AnimatedRoutes: React.FC = () => {
   const location = useLocation();
@@ -37,6 +39,8 @@ const AnimatedRoutes: React.FC = () => {
 
         <Route path="/tenant/dashboard" element={<RoleGuard allow={['tenant']}><TenantDashboard /></RoleGuard>} />
         <Route path="/landlord/dashboard" element={<RoleGuard allow={['landlord']}><LandlordDashboard /></RoleGuard>} />
+        <Route path="/landlord/listings" element={<RoleGuard allow={['landlord']}><Listings /></RoleGuard>} />
+        <Route path="/landlord/listings/new" element={<RoleGuard allow={['landlord']}><NewListing /></RoleGuard>} />
         <Route path="/admin/dashboard" element={<RoleGuard allow={['admin', 'owner']}><AdminDashboard /></RoleGuard>} />
 
         <Route path="/privacy" element={<Legal title="Privacy Policy" type="privacy" />} />
