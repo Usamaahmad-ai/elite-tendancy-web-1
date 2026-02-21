@@ -8,6 +8,8 @@
 - [ ] Run end-of-day smoke checklist
 
 ## Next Up
+- [x] Day 2: Supabase schema hardening (v2 SQL + indexes + RLS + seed)
+- [ ] Day 2: Run Supabase migration in project and validate role access
 - [ ] Public marketplace search/filter refactor
 - [ ] Landlord listing wizard
 - [ ] Tenant saved listings + alerts
