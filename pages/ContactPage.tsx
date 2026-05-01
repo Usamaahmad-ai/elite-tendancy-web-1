@@ -100,7 +100,7 @@ const ContactPage: React.FC = () => {
                     </div>
                     <div>
                       <h4 className="text-white font-serif text-xl mb-1 group-hover:text-gold transition-colors">Global Headquarters</h4>
-                      <p className="text-white/40 text-sm">51 Cornfield<br/>Dewsbury, West Yorkshire, WF13 3UZ</p>
+                      <p className="text-white/40 text-sm">51 Cornfield<br/>Office 18077,182-184 High Street North, East Ham, London, E62JA/p>
                     </div>
                  </div>
   
