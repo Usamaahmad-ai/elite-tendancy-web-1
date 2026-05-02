@@ -110,7 +110,7 @@ const ContactPage: React.FC = () => {
                     </div>
                     <div>
                       <h4 className="text-white font-serif text-xl mb-1 group-hover:text-gold transition-colors">Private Concierge</h4>
-                      <p className="text-white/40 text-sm">vip@elitetenancy.com</p>
+                      <p className="text-white/40 text-sm">info@elitetenancy.co.uk</p>
                     </div>
                  </div>
   
@@ -120,7 +120,7 @@ const ContactPage: React.FC = () => {
                      </div>
                      <div>
                        <h4 className="text-white font-serif text-xl mb-1 group-hover:text-gold transition-colors">Direct Line</h4>
-                       <p className="text-white/40 text-sm">+44 7446192577</p>
+                       <p className="text-white/40 text-sm">+44 7446 192577</p>
                      </div>
                  </div>
               </div>
