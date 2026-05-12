@@ -33,3 +33,19 @@ export interface Statistic {
   label: string;
   value: string;
 }
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  body: string;
+  category?: string;
+  featured_image?: string;
+  read_time?: string;
+  status: 'draft' | 'published' | 'archived';
+  author_id?: string;
+  published_at?: string;
+  created_at: string;
+  updated_at: string;
+}
