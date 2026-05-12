@@ -26,7 +26,6 @@ const PostEditor: React.FC = () => {
   const [slugError, setSlugError] = useState<string | null>(null);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     if (!isNew && id) {
       loadPost(id);
     }
@@ -54,7 +53,7 @@ const PostEditor: React.FC = () => {
     setPost(prev => ({
       ...prev,
       title,
-      slug: post.slug || generateSlug(title)
+      slug: prev.slug || generateSlug(title)
     }));
   };
 
@@ -122,27 +121,27 @@ const PostEditor: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen pt-32 flex items-center justify-center bg-obsidian">
-        <p className="text-platinum/60">Loading post...</p>
-      </div>
+      <DashboardLayout>
+        <div className="flex items-center justify-center py-20">
+          <p className="text-platinum/60">Loading post...</p>
+        </div>
+      </DashboardLayout>
     );
   }
 
   return (
-    <div className="min-h-screen pt-24 px-6 bg-obsidian text-platinum pb-12">
-      <div className="max-w-4xl mx-auto">
+    <DashboardLayout>
+      <div className="space-y-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <button
-              onClick={() => navigate('/admin/cms/posts')}
-              className="inline-flex items-center gap-2 text-platinum/60 hover:text-gold mb-4 transition-colors"
-            >
-              <ArrowLeft size={16} />
-              <span className="uppercase tracking-widest text-xs font-bold">Back</span>
-            </button>
-            <h1 className="text-4xl font-serif">{isNew ? 'Create Article' : 'Edit Article'}</h1>
-          </div>
+        <div>
+          <button
+            onClick={() => navigate('/admin/cms/posts')}
+            className="inline-flex items-center gap-2 text-platinum/60 hover:text-gold mb-4 transition-colors"
+          >
+            <ArrowLeft size={16} />
+            <span className="uppercase tracking-widest text-xs font-bold">Back</span>
+          </button>
+          <h1 className="text-3xl font-serif">{isNew ? 'Create Article' : 'Edit Article'}</h1>
         </div>
 
         {/* Error Alert */}
@@ -150,7 +149,7 @@ const PostEditor: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 mb-8 flex gap-3"
+            className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 flex gap-3"
           >
             <AlertCircle className="text-red-400 flex-shrink-0" size={20} />
             <p className="text-red-400">{error}</p>
@@ -158,7 +157,7 @@ const PostEditor: React.FC = () => {
         )}
 
         {/* Editor Form */}
-        <div className="space-y-8">
+        <div className="space-y-6">
           {/* Title */}
           <div>
             <label className="block text-sm font-bold uppercase tracking-widest text-gold/80 mb-3">Title *</label>
@@ -193,7 +192,7 @@ const PostEditor: React.FC = () => {
             <textarea
               value={post.excerpt || ''}
               onChange={(e) => setPost(prev => ({ ...prev, excerpt: e.target.value }))}
-              placeholder="Brief summary of the article (appears in blog listing)"
+              placeholder="Brief summary of the article"
               rows={3}
               className="w-full bg-obsidian/50 border border-white/10 focus:border-gold rounded px-4 py-3 text-white focus:outline-none transition-colors placeholder-white/20 resize-none"
             />
@@ -207,7 +206,7 @@ const PostEditor: React.FC = () => {
               type="text"
               value={post.category || ''}
               onChange={(e) => setPost(prev => ({ ...prev, category: e.target.value }))}
-              placeholder="e.g., Market Trends, Design Ideas, Legal"
+              placeholder="e.g., Market Trends, Legal, Property"
               className="w-full bg-obsidian/50 border-b border-white/10 focus:border-gold py-3 text-white focus:outline-none transition-colors placeholder-white/20"
             />
           </div>
@@ -224,9 +223,9 @@ const PostEditor: React.FC = () => {
             />
             {post.featured_image && (
               <div className="mt-3 border border-white/10 rounded p-3">
-                <img 
-                  src={post.featured_image} 
-                  alt="Preview" 
+                <img
+                  src={post.featured_image}
+                  alt="Preview"
                   className="w-full h-40 object-cover rounded"
                   onError={() => setError('Failed to load image')}
                 />
@@ -236,15 +235,17 @@ const PostEditor: React.FC = () => {
 
           {/* Body Content */}
           <div>
-            <label className="block text-sm font-bold uppercase tracking-widest text-gold/80 mb-3">Content * {post.read_time && <span className="text-platinum/60 font-normal">({post.read_time})</span>}</label>
+            <label className="block text-sm font-bold uppercase tracking-widest text-gold/80 mb-3">
+              Content * {post.read_time && <span className="text-platinum/60 font-normal">({post.read_time})</span>}
+            </label>
             <textarea
               value={post.body || ''}
               onChange={(e) => handleBodyChange(e.target.value)}
-              placeholder="Write your article content here. Supports basic HTML tags: &lt;h2&gt;, &lt;h3&gt;, &lt;p&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;a href=&quot;&quot;&gt;, &lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;, &lt;blockquote&gt;, &lt;code&gt;"
+              placeholder="Write your article content here. Use HTML tags for formatting."
               rows={15}
               className="w-full bg-obsidian/50 border border-white/10 focus:border-gold rounded px-4 py-3 text-white focus:outline-none transition-colors placeholder-white/20 resize-none font-mono text-sm"
             />
-            <p className="text-platinum/50 text-xs mt-2">HTML formatting is supported</p>
+            <p className="text-platinum/50 text-xs mt-2">HTML formatting is supported: &lt;h2&gt;, &lt;p&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;a href=&quot;&quot;&gt;</p>
           </div>
 
           {/* Status */}
@@ -262,7 +263,7 @@ const PostEditor: React.FC = () => {
           </div>
 
           {/* Actions */}
-          <div className="flex gap-4 pt-8 border-t border-white/10">
+          <div className="flex gap-4 pt-6 border-t border-white/10">
             <button
               onClick={() => handleSave('draft')}
               disabled={saving}
@@ -289,7 +290,7 @@ const PostEditor: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 
