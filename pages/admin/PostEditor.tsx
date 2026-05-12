@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Save, Upload, AlertCircle } from 'lucide-react';
-import DashboardLayout from '../../components/dashboard/DashboardLayout';
 import { getPostById, createPost, updatePost, BlogPost, generateSlug, calculateReadTime } from '../../lib/blogApi';
 
 const PostEditor: React.FC = () => {
@@ -26,6 +25,7 @@ const PostEditor: React.FC = () => {
   const [slugError, setSlugError] = useState<string | null>(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (!isNew && id) {
       loadPost(id);
     }
@@ -121,153 +121,160 @@ const PostEditor: React.FC = () => {
 
   if (loading) {
     return (
-      <DashboardLayout>
-        <div className="flex items-center justify-center py-20">
+      <div className="min-h-screen pt-24 px-6 bg-obsidian text-platinum">
+        <div className="max-w-4xl mx-auto flex items-center justify-center py-20">
           <p className="text-platinum/60">Loading post...</p>
         </div>
-      </DashboardLayout>
+      </div>
     );
   }
 
   return (
-    <DashboardLayout>
-      <div className="space-y-8">
-        {/* Header */}
-        <div>
-          <button
-            onClick={() => navigate('/admin/cms/posts')}
-            className="inline-flex items-center gap-2 text-platinum/60 hover:text-gold mb-4 transition-colors"
-          >
-            <ArrowLeft size={16} />
-            <span className="uppercase tracking-widest text-xs font-bold">Back</span>
-          </button>
-          <h1 className="text-3xl font-serif">{isNew ? 'Create Article' : 'Edit Article'}</h1>
-        </div>
-
-        {/* Error Alert */}
-        {error && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 flex gap-3"
-          >
-            <AlertCircle className="text-red-400 flex-shrink-0" size={20} />
-            <p className="text-red-400">{error}</p>
-          </motion.div>
-        )}
-
-        {/* Editor Form */}
-        <div className="space-y-6">
-          {/* Title */}
+    <div className="min-h-screen pt-24 px-6 bg-obsidian text-platinum pb-12">
+      <div className="max-w-4xl mx-auto">
+        <div className="space-y-8">
+          {/* Header */}
           <div>
-            <label className="block text-sm font-bold uppercase tracking-widest text-gold/80 mb-3">Title *</label>
-            <input
-              type="text"
-              value={post.title || ''}
-              onChange={(e) => handleTitleChange(e.target.value)}
-              placeholder="Enter article title"
-              className="w-full bg-obsidian/50 border-b border-white/10 focus:border-gold py-3 text-white focus:outline-none transition-colors placeholder-white/20"
-            />
-          </div>
-
-          {/* Slug */}
-          <div>
-            <label className="block text-sm font-bold uppercase tracking-widest text-gold/80 mb-3">URL Slug *</label>
-            <input
-              type="text"
-              value={post.slug || ''}
-              onChange={(e) => handleSlugChange(e.target.value)}
-              placeholder="article-title"
-              className={`w-full bg-obsidian/50 border-b focus:outline-none py-3 text-white transition-colors placeholder-white/20 ${
-                slugError ? 'border-red-400 focus:border-red-400' : 'border-white/10 focus:border-gold'
-              }`}
-            />
-            {slugError && <p className="text-red-400 text-xs mt-1">{slugError}</p>}
-            <p className="text-platinum/50 text-xs mt-2">URL-friendly version: /blog/{post.slug}</p>
-          </div>
-
-          {/* Excerpt */}
-          <div>
-            <label className="block text-sm font-bold uppercase tracking-widest text-gold/80 mb-3">Excerpt *</label>
-            <textarea
-              value={post.excerpt || ''}
-              onChange={(e) => setPost(prev => ({ ...prev, excerpt: e.target.value }))}
-              placeholder="Brief summary of the article"
-              rows={3}
-              className="w-full bg-obsidian/50 border border-white/10 focus:border-gold rounded px-4 py-3 text-white focus:outline-none transition-colors placeholder-white/20 resize-none"
-            />
-            <p className="text-platinum/50 text-xs mt-2">{post.excerpt?.length || 0}/250 characters</p>
-          </div>
-
-          {/* Category */}
-          <div>
-            <label className="block text-sm font-bold uppercase tracking-widest text-gold/80 mb-3">Category</label>
-            <input
-              type="text"
-              value={post.category || ''}
-              onChange={(e) => setPost(prev => ({ ...prev, category: e.target.value }))}
-              placeholder="e.g., Market Trends, Legal, Property"
-              className="w-full bg-obsidian/50 border-b border-white/10 focus:border-gold py-3 text-white focus:outline-none transition-colors placeholder-white/20"
-            />
-          </div>
-
-          {/* Featured Image */}
-          <div>
-            <label className="block text-sm font-bold uppercase tracking-widest text-gold/80 mb-3">Featured Image URL</label>
-            <input
-              type="url"
-              value={post.featured_image || ''}
-              onChange={(e) => setPost(prev => ({ ...prev, featured_image: e.target.value }))}
-              placeholder="https://example.com/image.jpg"
-              className="w-full bg-obsidian/50 border-b border-white/10 focus:border-gold py-3 text-white focus:outline-none transition-colors placeholder-white/20"
-            />
-            {post.featured_image && (
-              <div className="mt-3 border border-white/10 rounded p-3">
-                <img
-                  src={post.featured_image}
-                  alt="Preview"
-                  className="w-full h-40 object-cover rounded"
-                  onError={() => setError('Failed to load image')}
-                />
-              </div>
-            )}
-          </div>
-
-          {/* Body Content */}
-          <div>
-            <label className="block text-sm font-bold uppercase tracking-widest text-gold/80 mb-3">
-              Content * {post.read_time && <span className="text-platinum/60 font-normal">({post.read_time})</span>}
-            </label>
-            <textarea
-              value={post.body || ''}
-              onChange={(e) => handleBodyChange(e.target.value)}
-              placeholder="Write your article content here. Use HTML tags for formatting."
-              rows={15}
-              className="w-full bg-obsidian/50 border border-white/10 focus:border-gold rounded px-4 py-3 text-white focus:outline-none transition-colors placeholder-white/20 resize-none font-mono text-sm"
-            />
-            <p className="text-platinum/50 text-xs mt-2">HTML formatting is supported: &lt;h2&gt;, &lt;p&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;a href=&quot;&quot;&gt;</p>
-          </div>
-
-          {/* Status */}
-          <div>
-            <label className="block text-sm font-bold uppercase tracking-widest text-gold/80 mb-3">Status</label>
-            <select
-              value={post.status || 'draft'}
-              onChange={(e) => setPost(prev => ({ ...prev, status: e.target.value as 'draft' | 'published' | 'archived' }))}
-              className="w-full bg-obsidian/50 border border-white/10 focus:border-gold rounded px-4 py-3 text-white focus:outline-none transition-colors"
+            <button
+              onClick={() => navigate('/admin/cms/posts')}
+              className="inline-flex items-center gap-2 text-platinum/60 hover:text-gold mb-4 transition-colors"
             >
-              <option value="draft">Draft (Not visible)</option>
-              <option value="published">Published (Visible)</option>
-              <option value="archived">Archived (Hidden)</option>
-            </select>
+              <ArrowLeft size={16} />
+              <span className="uppercase tracking-widest text-xs font-bold">Back</span>
+            </button>
+            <h1 className="text-4xl font-serif mb-2">{isNew ? 'Create Article' : 'Edit Article'}</h1>
+            <p className="text-platinum/60">Write and publish your article</p>
           </div>
+
+          {/* Error Alert */}
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 flex gap-3"
+            >
+              <AlertCircle className="text-red-400 flex-shrink-0" size={20} />
+              <p className="text-red-400">{error}</p>
+            </motion.div>
+          )}
+
+          {/* Editor Form */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-6 bg-gradient-to-br from-white/5 to-white/0 border border-white/10 rounded-lg p-8"
+          >
+            {/* Title */}
+            <div>
+              <label className="block text-sm font-bold uppercase tracking-widest text-gold/80 mb-3">Title *</label>
+              <input
+                type="text"
+                value={post.title || ''}
+                onChange={(e) => handleTitleChange(e.target.value)}
+                placeholder="Enter article title"
+                className="w-full bg-obsidian/50 border-b border-white/10 focus:border-gold py-3 text-white focus:outline-none transition-colors placeholder-white/20"
+              />
+            </div>
+
+            {/* Slug */}
+            <div>
+              <label className="block text-sm font-bold uppercase tracking-widest text-gold/80 mb-3">URL Slug *</label>
+              <input
+                type="text"
+                value={post.slug || ''}
+                onChange={(e) => handleSlugChange(e.target.value)}
+                placeholder="article-title"
+                className={`w-full bg-obsidian/50 border-b focus:outline-none py-3 text-white transition-colors placeholder-white/20 ${
+                  slugError ? 'border-red-400 focus:border-red-400' : 'border-white/10 focus:border-gold'
+                }`}
+              />
+              {slugError && <p className="text-red-400 text-xs mt-1">{slugError}</p>}
+              <p className="text-platinum/50 text-xs mt-2">URL-friendly version: /blog/{post.slug}</p>
+            </div>
+
+            {/* Excerpt */}
+            <div>
+              <label className="block text-sm font-bold uppercase tracking-widest text-gold/80 mb-3">Excerpt *</label>
+              <textarea
+                value={post.excerpt || ''}
+                onChange={(e) => setPost(prev => ({ ...prev, excerpt: e.target.value }))}
+                placeholder="Brief summary of the article (appears in blog listing)"
+                rows={3}
+                className="w-full bg-obsidian/50 border border-white/10 focus:border-gold rounded px-4 py-3 text-white focus:outline-none transition-colors placeholder-white/20 resize-none"
+              />
+              <p className="text-platinum/50 text-xs mt-2">{post.excerpt?.length || 0}/250 characters</p>
+            </div>
+
+            {/* Category */}
+            <div>
+              <label className="block text-sm font-bold uppercase tracking-widest text-gold/80 mb-3">Category</label>
+              <input
+                type="text"
+                value={post.category || ''}
+                onChange={(e) => setPost(prev => ({ ...prev, category: e.target.value }))}
+                placeholder="e.g., Market Trends, Legal, Property"
+                className="w-full bg-obsidian/50 border-b border-white/10 focus:border-gold py-3 text-white focus:outline-none transition-colors placeholder-white/20"
+              />
+            </div>
+
+            {/* Featured Image */}
+            <div>
+              <label className="block text-sm font-bold uppercase tracking-widest text-gold/80 mb-3">Featured Image URL</label>
+              <input
+                type="url"
+                value={post.featured_image || ''}
+                onChange={(e) => setPost(prev => ({ ...prev, featured_image: e.target.value }))}
+                placeholder="https://example.com/image.jpg"
+                className="w-full bg-obsidian/50 border-b border-white/10 focus:border-gold py-3 text-white focus:outline-none transition-colors placeholder-white/20"
+              />
+              {post.featured_image && (
+                <div className="mt-3 border border-white/10 rounded p-3">
+                  <img
+                    src={post.featured_image}
+                    alt="Preview"
+                    className="w-full h-40 object-cover rounded"
+                    onError={() => setError('Failed to load image')}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Body Content */}
+            <div>
+              <label className="block text-sm font-bold uppercase tracking-widest text-gold/80 mb-3">
+                Content * {post.read_time && <span className="text-platinum/60 font-normal">({post.read_time})</span>}
+              </label>
+              <textarea
+                value={post.body || ''}
+                onChange={(e) => handleBodyChange(e.target.value)}
+                placeholder="Write your article content here. Use HTML tags for formatting."
+                rows={15}
+                className="w-full bg-obsidian/50 border border-white/10 focus:border-gold rounded px-4 py-3 text-white focus:outline-none transition-colors placeholder-white/20 resize-none font-mono text-sm"
+              />
+              <p className="text-platinum/50 text-xs mt-2">HTML formatting is supported: &lt;h2&gt;, &lt;p&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;a href=&quot;&quot;&gt;</p>
+            </div>
+
+            {/* Status */}
+            <div>
+              <label className="block text-sm font-bold uppercase tracking-widest text-gold/80 mb-3">Status</label>
+              <select
+                value={post.status || 'draft'}
+                onChange={(e) => setPost(prev => ({ ...prev, status: e.target.value as 'draft' | 'published' | 'archived' }))}
+                className="w-full bg-obsidian/50 border border-white/10 focus:border-gold rounded px-4 py-3 text-white focus:outline-none transition-colors"
+              >
+                <option value="draft">Draft (Not visible)</option>
+                <option value="published">Published (Visible)</option>
+                <option value="archived">Archived (Hidden)</option>
+              </select>
+            </div>
+          </motion.div>
 
           {/* Actions */}
-          <div className="flex gap-4 pt-6 border-t border-white/10">
+          <div className="flex gap-4">
             <button
               onClick={() => handleSave('draft')}
               disabled={saving}
-              className="flex items-center gap-2 px-6 py-3 bg-graphite text-platinum border border-white/20 hover:border-white/40 font-bold uppercase tracking-widest transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-6 py-3 bg-graphite text-platinum border border-white/20 hover:border-white/40 font-bold uppercase tracking-widest transition-colors disabled:opacity-50 rounded"
             >
               <Save size={18} />
               Save Draft
@@ -275,7 +282,7 @@ const PostEditor: React.FC = () => {
             <button
               onClick={handlePublish}
               disabled={saving}
-              className="flex items-center gap-2 px-6 py-3 bg-gold text-obsidian font-bold uppercase tracking-widest hover:bg-gold/80 transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-6 py-3 bg-gold text-obsidian font-bold uppercase tracking-widest hover:bg-gold/80 transition-colors disabled:opacity-50 rounded"
             >
               <Upload size={18} />
               {isNew ? 'Publish' : 'Update & Publish'}
@@ -290,7 +297,7 @@ const PostEditor: React.FC = () => {
           </div>
         </div>
       </div>
-    </DashboardLayout>
+    </div>
   );
 };
 
