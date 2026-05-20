@@ -12,7 +12,7 @@ const ContactPage: React.FC = () => {
     // Only initialize if the container exists and map hasn't been created yet
     if (mapContainerRef.current && !mapInstanceRef.current) {
       
-      // Coordinates for 51 Cornfield, Dewsbury, West Yorkshire, WF13 3UZ
+      // Coordinates for Office 18077, East Ham, London, E6 2JA
       const HQ_COORDS: [number, number] = [51.5322, 0.0554]; 
 
       const map = L.map(mapContainerRef.current, {
@@ -48,7 +48,7 @@ const ContactPage: React.FC = () => {
         .bindPopup(
           `<div class="font-sans min-w-[150px] p-1">
              <h3 class="font-serif font-bold text-gold text-sm mb-1 tracking-widest uppercase">Global HQ</h3>
-             <p class="text-xs text-white/80 leading-relaxed">51 Cornfield<br/>Dewsbury, West Yorkshire<br/>WF13 3UZ</p>
+             <p class="text-xs text-white/80 leading-relaxed">Office 18077, 182-184 High Street North<br/>East Ham, London, E6 2JA</p>
            </div>`
         )
         .openPopup();
